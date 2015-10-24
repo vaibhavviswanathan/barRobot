@@ -69,9 +69,10 @@ void reset(){
   int switchRead = digitalRead(7);
   
   while (switchRead != HIGH){
+    Serial.println(switchRead);
     switchRead = digitalRead(7);
-    myStepper.step(1);
-    delay(50); //control speed of arduino (approx 7.5 RPM)
+    myStepper.step(-1);
+    delay(200); //control speed of arduino (approx 7.5 RPM)
     }
  //sets the state
  state = 1; 
