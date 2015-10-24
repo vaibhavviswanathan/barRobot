@@ -18,6 +18,8 @@ void setup(){
   //initialize serial port
   Serial.begin(9600);
   //define pins  
+  pinMode(7, INPUT);
+  //sends to reset state
   reset();  
 }
 
@@ -54,7 +56,17 @@ void changeState(int newState){
 //resets the turntable
 void reset(){
   //correct later
-  changeState(0);  
+  changeState(6);
+  
+  boolean inStateZero;
+  int switchRead = digitalRead(7);
+  
+  while (switchRead != HIGH){
+    switchRead = digitalRead(7);
+    myStepper.step(1);
+    delay(50); //control speed of arduino (approx 7.5 RPM)
+    }
+  }
  //sets the state
  state = 0; 
 }
