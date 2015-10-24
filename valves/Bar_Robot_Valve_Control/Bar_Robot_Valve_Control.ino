@@ -11,7 +11,6 @@ void setup()
   for (int i=0; i<6; i++) {
    digitalWrite(valve_pins[i], HIGH); 
   }
-  Serial.print("Ready");
 }
 
 void loop()
@@ -47,6 +46,7 @@ void loop()
           }
           delay(max_time / 256);
         }
+        Serial.print('D');
       }
     }
   }
