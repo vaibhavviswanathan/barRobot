@@ -3,18 +3,18 @@
 #include <Stepper.h>
 
 const int stepsPerLittleRevolution = 200;  //rotates the little gear one revolution
-const int stepsPerBigRevolution = 400; //rotates the big gear one revolution
+const int stepsPerBigRevolution = 2*stepsPerLittleRevolution; //rotates the big gear one revolution
 
 
 // initialize the stepper library on pins 8 through 11:
 Stepper myStepper(stepsPerLittleRevolution, 8,11,12,13);
 
 // set global state
-int state;
+int state = 1;
 
 void setup(){
   // set the speed at 10 rpm
-  myStepper.setSpeed(7.5);
+  myStepper.setSpeed(5);
   //initialize serial port
   Serial.begin(9600);
   //define pins  
@@ -54,7 +54,7 @@ void changeState(int newState){
   // number of steps to next state
   int numSteps = (stepsPerBigRevolution/6)*stateSwitch;
   // Rotate to next state
-  myStepper.step(-numSteps);
+  myStepper.step(numSteps);
   // Set the state
   state = newState;
   // Notify the Pi
