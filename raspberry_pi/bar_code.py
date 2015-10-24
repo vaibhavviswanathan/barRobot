@@ -24,12 +24,34 @@ drinks = {
 }
 
 def make_drink(name):
+    
+    # Reset the stepper motor
+    stepper_ser.write(69)
+
     instructions = drinks[name]
     for instruction in instructions:
+        rotate(instruction[0])
+        set_valves([instruction[1]])
 
 def set_valves(times):
     # takes a list of tuples, (valve, millis)
-    valves_ser.write()
+    valves_ser.write(1)
+    valves = [2, 2, 2, 2, 2, 2]
+    for time in times:
+        valves[time[0]] = int((float(time[1]) / float(MAX_VALVE_TIME)) * 256);
+        if (valves[time[0]] < 2):
+            valves[time[0]] = 2
+    for i in range(6):
+        valves_ser.write( valves[i] )
+    
+    resp = ser.read()
+    print resp
+
+def rotate(position):
+    # Takes a positon 0-5
+    stepper_ser.write(position+1)
+    resp = ser.read()
+    print resp
 
 def main():
     # For now, try making one drink
