@@ -30,7 +30,7 @@ void loop(){
     int piRead = Serial.read()-'0'; 
     // check if reset
     Serial.println(piRead);
-    if (piRead == 69){
+    if (piRead == 7){
        reset(); 
     }
     // check if state changing
@@ -49,7 +49,7 @@ void changeState(int newState){
   // number of steps to next state
   int numSteps = (stepsPerBigRevolution/6)*stateSwitch;
   // Rotate to next state
-  myStepper.step(numSteps-0);
+  myStepper.step(-numSteps);
   // Set the state
   state = newState;
   // Notify the Pi
