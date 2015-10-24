@@ -7,7 +7,7 @@ const int stepsPerBigRevolution = 400; //rotates the big gear one revolution
 
 
 // initialize the stepper library on pins 8 through 11:
-Stepper myStepper(stepsPerLittleRevolution, 8,9,10,11);
+Stepper myStepper(stepsPerLittleRevolution, 8,11,12,13);
 
 // set global state
 int state;
@@ -19,6 +19,11 @@ void setup(){
   Serial.begin(9600);
   //define pins  
   pinMode(7, INPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  digitalWrite(9,HIGH);
+  digitalWrite(10, HIGH);
+  
   Serial.println("start");
   //sends to reset state
 //  reset();  
