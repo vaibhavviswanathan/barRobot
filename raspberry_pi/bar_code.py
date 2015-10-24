@@ -24,7 +24,6 @@ drinks = {
 }
 
 def make_drink(name):
-    
     # Reset the stepper motor
     stepper_ser.write(69)
 
@@ -32,6 +31,23 @@ def make_drink(name):
     for instruction in instructions:
         rotate(instruction[0])
         set_valves([instruction[1]])
+
+def make_drinks(drinks):
+    # Takes a list of tuples, (drink_name, location (0-5))
+    # Reset the stepper motor
+    stepper_ser.write(69)
+        
+    valves = [[], [], [], [], [], []]
+    for drink in drinks: 
+        insts = drinks[drink[0]]
+        for inst in insts:
+            valves[(inst[0]-drink[1])%6].append(inst)
+
+    for loc in range(6):
+        rotate(loc)
+        set_valves(valves[loc])
+
+    stepper_ser.write(69)
 
 def set_valves(times):
     # takes a list of tuples, (valve, millis)
