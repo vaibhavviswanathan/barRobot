@@ -11,6 +11,7 @@ void setup()
   for (int i=0; i<6; i++) {
    digitalWrite(valve_pins[i], HIGH); 
   }
+  Serial.print("Ready");
 }
 
 char valve_times[6];

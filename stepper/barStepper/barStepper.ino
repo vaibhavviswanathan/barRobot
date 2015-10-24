@@ -2,15 +2,15 @@
 
 #include <Stepper.h>
 
-const int stepsPerLittleRevolution = 200;  //rotates the little gear one revolution
-const int stepsPerBigRevolution = 400; //rotates the big gear one revolution
+const int stepsPerLittleRevolution = 203;  //rotates the little gear one revolution
+const int stepsPerBigRevolution = 2*stepsPerLittleRevolution; //rotates the big gear one revolution
 
 
 // initialize the stepper library on pins 8 through 11:
-Stepper myStepper(stepsPerLittleRevolution, 8,9,10,11);
+Stepper myStepper(stepsPerLittleRevolution, 8,11,12,13);
 
 // set global state
-int state;
+int state = 1;
 
 void setup(){
   // set the speed at 10 rpm
@@ -19,7 +19,12 @@ void setup(){
   Serial.begin(9600);
   //define pins  
   pinMode(7, INPUT);
-  Serial.println("start");
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  digitalWrite(9,HIGH);
+  digitalWrite(10, HIGH);
+  
+//  Serial.println("start");
   //sends to reset state
 //  reset();  
 }
@@ -29,7 +34,6 @@ void loop(){
     // read in from serial
     int piRead = Serial.read()-'0'; 
     // check if reset
-    Serial.println(piRead);
     if (piRead == 7){
        reset(); 
     }
@@ -49,11 +53,11 @@ void changeState(int newState){
   // number of steps to next state
   int numSteps = (stepsPerBigRevolution/6)*stateSwitch;
   // Rotate to next state
-  myStepper.step(-numSteps);
+  myStepper.step(numSteps);
   // Set the state
   state = newState;
   // Notify the Pi
-  Serial.println(state);
+  Serial.print(state);
 }
 
 //resets the turntable
@@ -71,4 +75,5 @@ void reset(){
     }
  //sets the state
  state = 1; 
+ Serial.print(state);
 }
