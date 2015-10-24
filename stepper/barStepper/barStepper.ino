@@ -2,7 +2,7 @@
 
 #include <Stepper.h>
 
-const int stepsPerLittleRevolution = 200;  //rotates the little gear one revolution
+const int stepsPerLittleRevolution = 203;  //rotates the little gear one revolution
 const int stepsPerBigRevolution = 2*stepsPerLittleRevolution; //rotates the big gear one revolution
 
 
@@ -14,7 +14,7 @@ int state = 1;
 
 void setup(){
   // set the speed at 10 rpm
-  myStepper.setSpeed(5);
+  myStepper.setSpeed(7.5);
   //initialize serial port
   Serial.begin(9600);
   //define pins  
@@ -34,7 +34,6 @@ void loop(){
     // read in from serial
     int piRead = Serial.read()-'0'; 
     // check if reset
-    Serial.println(piRead);
     if (piRead == 7){
        reset(); 
     }
@@ -58,7 +57,7 @@ void changeState(int newState){
   // Set the state
   state = newState;
   // Notify the Pi
-  Serial.println(state);
+  Serial.print(state);
 }
 
 //resets the turntable
@@ -76,4 +75,5 @@ void reset(){
     }
  //sets the state
  state = 1; 
+ Serial.print(state);
 }
