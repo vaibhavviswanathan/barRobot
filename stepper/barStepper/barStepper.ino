@@ -24,7 +24,7 @@ void setup(){
   digitalWrite(9,HIGH);
   digitalWrite(10, HIGH);
   
-  Serial.println("start");
+//  Serial.println("start");
   //sends to reset state
 //  reset();  
 }
