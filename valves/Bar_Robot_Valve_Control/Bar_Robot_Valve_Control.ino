@@ -1,6 +1,6 @@
-byte in_byte;
-int valve_pins[6] = {1, 2, 3, 4, 5, 6};
-int max_time = 30000;
+char in_byte;
+int valve_pins[6] = {3, 4, 5, 6, 7, 8};
+int max_time = 10000;
 
 void setup()
 {
@@ -13,43 +13,46 @@ void setup()
   }
 }
 
+char valve_times[6];
+boolean reading = false;
+int current_byte=0;
+
 void loop()
 {
-  byte valve_times[6];
-  boolean reading = false;
-  int current_byte=0;
   if (Serial.available() > 0) {
     in_byte= Serial.read();
-    if (in_byte == 1 && !reading) {
-      for (int i=0; i<6; ++i) {
-        valve_times[0] = 0;
-      }
-      reading = true;
-      current_byte=0;
-    }
     if (reading) {
-      valve_times[current_byte] = Serial.read();
+      valve_times[current_byte] = in_byte;
       current_byte++;
       if (current_byte == 6) {
         reading = false;
         // Begin valve control
         
+        int done = 0;
         // Initially turn on all valves
         for (int i=0; i<6; i++) {
           digitalWrite(valve_pins[i], LOW); 
         }
-        for (int time=2; time<256; ++time) {
+        for (byte time=2; time<128; ++time) {
           for (int i=0; i<6; ++i) {
-            if (valve_times[i] == time) {
-              digitalWrite(valve_pins[i], HIGH); 
+            if (valve_times[i] <= time) {
+              digitalWrite(valve_pins[i], HIGH);
+              done++; 
             }
           }
-          delay(max_time / 256);
+          if (done < 6) {
+            delay(max_time / 128);
+          }
         }
-        Serial.print('D');
+        Serial.print('A');
       }
+    }
+    if (in_byte == 1 && !reading) {
+      for (int i=0; i<6; ++i) {
+        valve_times[i] = 2;
+      }
+      reading = true;
+      current_byte=0;
     }
   }
 }
-
-
